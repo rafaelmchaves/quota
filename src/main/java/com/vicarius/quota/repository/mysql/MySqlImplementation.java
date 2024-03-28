@@ -11,11 +11,11 @@ public class MySqlImplementation implements DatabaseInterface {
     public static final String IMPLEMENTATION_ID = "MySqlImplementation";
 
     private final UserRepository userRepository;
+    private final UserEntityMapper userEntityMapper;
 
     @Override
-    public User save(User user) {
-        final var userEntity = UserEntity.builder().firstName(user.getFirstName()).lastName(user.getLastName()).status(user.getStatus()).build();
-        final var result = userRepository.save(userEntity);
-        return User.builder().build();
+    public User save(User user) {;
+        final var result = userRepository.save(userEntityMapper.convert(user));
+        return userEntityMapper.convert(result);
     }
 }
