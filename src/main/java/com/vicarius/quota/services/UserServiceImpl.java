@@ -1,19 +1,27 @@
 package com.vicarius.quota.services;
 
+import com.vicarius.quota.model.Status;
 import com.vicarius.quota.model.User;
-import com.vicarius.quota.repository.DatabaseFactory;
 import com.vicarius.quota.repository.DatabaseInterface;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    DatabaseInterface databaseInterface = new DatabaseFactory().getDatabase();
+    private final DatabaseInterface databaseInterface;
+
+    public UserServiceImpl(DatabaseInterface databaseInterface) {
+        this.databaseInterface = databaseInterface;
+    }
 
     @Override
     public User create(User user) {
 
-        return null;
+        user.setCreation(LocalDateTime.now());
+        user.setStatus(Status.ACTIVE);
+        return databaseInterface.save(user);
     }
 
     @Override

@@ -4,9 +4,11 @@ import com.vicarius.quota.model.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
+@Builder
 @Table(name = "users")
 public class UserEntity {
 
