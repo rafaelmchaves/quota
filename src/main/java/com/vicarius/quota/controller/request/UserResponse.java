@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-//TODO maybe create as Record
+//TODO maybe create as a Record
 @Setter
 @Getter
 public class UserResponse {

@@ -1,8 +1,8 @@
-package com.vicarius.quota.services;
+package com.vicarius.quota.repository;
 
 import com.vicarius.quota.repository.DatabaseInterface;
-import com.vicarius.quota.repository.ElasticImplementation;
-import com.vicarius.quota.repository.MySqlImplementation;
+import com.vicarius.quota.repository.elastic.ElasticImplementation;
+import com.vicarius.quota.repository.mysql.MySqlImplementation;
 
 import java.time.LocalTime;
 
