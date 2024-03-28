@@ -1,18 +1,21 @@
-package com.vicarius.quota.controller.request;
+package com.vicarius.quota.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-//TODO maybe create as Record
-@Setter
+@Builder
 @Getter
-public class UserResponse {
+public class User {
 
     private String id;
     private String firstName;
     private String lastName;
     private LocalDateTime lastLoginTimeUtc;
+    private LocalDateTime creation;
+    private LocalDateTime update;
+    private Status status;
 
 }
