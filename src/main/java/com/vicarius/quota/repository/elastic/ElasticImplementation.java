@@ -5,6 +5,7 @@ import com.vicarius.quota.repository.UserBoundary;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -34,5 +35,10 @@ public class ElasticImplementation implements UserBoundary {
     @Override
     public void delete(UUID id) {
         log.info("User was deleted");
+    }
+
+    @Override
+    public List<User> findAll() {
+        return null;
     }
 }

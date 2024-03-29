@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController()
 public class UserController {
@@ -59,7 +61,8 @@ public class UserController {
     }
 
     @GetMapping("/users/quota")
-    ResponseEntity<Void> getUsersQuota() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    ResponseEntity<List<UserResponse>> getUsersQuota() {
+        final var users = this.userService.findAll();
+        return new ResponseEntity<>(this.userResponseMapper.convert(users), HttpStatus.OK);
     }
 }
