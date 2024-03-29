@@ -8,5 +8,7 @@ public interface DatabaseInterface {
 
     User save(User user);
     User get(UUID id);
+    User update(User user);
+    User delete(UUID id);
 
 }

@@ -1,7 +1,8 @@
 package com.vicarius.quota.controller;
 
 import com.vicarius.quota.controller.request.UserRequest;
-import com.vicarius.quota.controller.request.UserResponse;
+import com.vicarius.quota.controller.request.UserUpdateRequest;
+import com.vicarius.quota.controller.response.UserResponse;
 import com.vicarius.quota.model.User;
 import com.vicarius.quota.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ public class UserController {
 
     private final UserResponseMapper userResponseMapper;
 
+    private final UserRequestMapper userRequestMapper;
+
     @PostMapping("/users")
     ResponseEntity<UserResponse> create(@RequestBody UserRequest userRequest) {
 
@@ -28,11 +31,13 @@ public class UserController {
         return new ResponseEntity<>(userResponseMapper.convert(user), HttpStatus.CREATED);
     }
 
-    @PutMapping(consumes = "application/json", value = "/users/{id}")
-    ResponseEntity<UserResponse> update(@PathVariable String id, @RequestBody UserRequest userRequest) {
+    @PutMapping(value = "/users/{id}")
+    ResponseEntity<UserResponse> update(@PathVariable String id, @RequestBody UserUpdateRequest userRequest) {
 
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        final var user = this.userRequestMapper.convert(userRequest);
+        user.setId(id);
+        final var userResponse = userResponseMapper.convert(this.userService.update(user));
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @GetMapping(value = "/users/{id}", produces = "application/json")

@@ -27,4 +27,19 @@ public class MySqlImplementation implements DatabaseInterface {
     public User get(UUID id) {
         return userEntityMapper.convert(userRepository.findById(id).orElse(null));
     }
+
+    @Override
+    public User update(User user) {
+        final var userEntity = userEntityMapper.convert(user);
+        if (userEntity.getId() == null) {
+            userEntity.setId(UUID.randomUUID());
+        }
+        final var result = userRepository.save(userEntity);
+        return userEntityMapper.convert(result);
+    }
+
+    @Override
+    public User delete(UUID id) {
+        return null;
+    }
 }

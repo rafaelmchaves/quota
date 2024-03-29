@@ -25,7 +25,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
-        return null;
+        user.setUpdate(LocalDateTime.now());
+        final var foundUser = databaseFactory.getDatabase().get(UUID.fromString(user.getId()));
+        if (foundUser == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        foundUser.setStatus(user.getStatus());
+        foundUser.setFirstName(user.getFirstName());
+        foundUser.setLastName(user.getLastName());
+        foundUser.setUpdate(LocalDateTime.now());
+
+        return databaseFactory.getDatabase().update(foundUser);
     }
 
     @Override

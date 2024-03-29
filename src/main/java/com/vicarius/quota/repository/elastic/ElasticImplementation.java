@@ -23,4 +23,14 @@ public class ElasticImplementation implements DatabaseInterface {
     public User get(UUID id) {
         return null;
     }
+
+    @Override
+    public User update(User user) {
+        return null;
+    }
+
+    @Override
+    public User delete(UUID id) {
+        return null;
+    }
 }
