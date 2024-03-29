@@ -5,6 +5,7 @@ import com.vicarius.quota.controller.request.UserUpdateRequest;
 import com.vicarius.quota.controller.response.UserResponse;
 import com.vicarius.quota.model.User;
 import com.vicarius.quota.services.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,16 @@ public class UserController {
     @DeleteMapping(value = "/users/{id}")
     ResponseEntity<UserResponse> delete(@PathVariable String id) {
         this.userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/users/{id}/consume-quota")
+    ResponseEntity<Void> consumeQuota(@PathVariable String id) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/users/quota")
+    ResponseEntity<Void> getUsersQuota() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

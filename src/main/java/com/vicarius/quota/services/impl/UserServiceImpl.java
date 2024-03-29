@@ -1,8 +1,9 @@
-package com.vicarius.quota.services;
+package com.vicarius.quota.services.impl;
 
 import com.vicarius.quota.model.Status;
 import com.vicarius.quota.model.User;
 import com.vicarius.quota.repository.DatabaseFactory;
+import com.vicarius.quota.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
