@@ -35,10 +35,11 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}", produces = "application/json")
+    @GetMapping(value = "/users/{id}", produces = "application/json")
     ResponseEntity<UserResponse> get(@PathVariable String id) {
 
-        return new ResponseEntity<>(new UserResponse(), HttpStatus.OK);
+        final var user = userResponseMapper.convert(this.userService.get(id));
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}", consumes = "application/json")

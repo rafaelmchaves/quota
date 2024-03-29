@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User get(String id) {
-        return null;
+        return databaseFactory.getDatabase().get(UUID.fromString(id));
     }
 
     @Override

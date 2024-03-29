@@ -22,4 +22,9 @@ public class MySqlImplementation implements DatabaseInterface {
         final var result = userRepository.save(userEntity);
         return userEntityMapper.convert(result);
     }
+
+    @Override
+    public User get(UUID id) {
+        return userEntityMapper.convert(userRepository.findById(id).orElse(null));
+    }
 }
