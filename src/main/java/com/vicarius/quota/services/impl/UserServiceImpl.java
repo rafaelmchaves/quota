@@ -2,8 +2,8 @@ package com.vicarius.quota.services.impl;
 
 import com.vicarius.quota.model.Status;
 import com.vicarius.quota.model.User;
-import com.vicarius.quota.repository.DatabaseFactory;
-import com.vicarius.quota.repository.DatabaseInterface;
+import com.vicarius.quota.repository.DatabaseStrategy;
+import com.vicarius.quota.repository.UserBoundary;
 import com.vicarius.quota.repository.elastic.ElasticImplementation;
 import com.vicarius.quota.repository.mysql.MySqlImplementation;
 import com.vicarius.quota.services.UserService;
@@ -16,15 +16,15 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final DatabaseFactory databaseFactory;
+    private final DatabaseStrategy databaseStrategy;
 
-    private final DatabaseInterface mysqlDao;
+    private final UserBoundary mysqlDao;
 
-    private final DatabaseInterface elasticDao;
+    private final UserBoundary elasticDao;
 
-    public UserServiceImpl(DatabaseFactory databaseFactory, @Qualifier(MySqlImplementation.IMPLEMENTATION_ID) DatabaseInterface mysqlDao,
-                           @Qualifier(ElasticImplementation.IMPLEMENTATION_ID) DatabaseInterface elasticDao) {
-        this.databaseFactory = databaseFactory;
+    public UserServiceImpl(DatabaseStrategy databaseStrategy, @Qualifier(MySqlImplementation.IMPLEMENTATION_ID) UserBoundary mysqlDao,
+                           @Qualifier(ElasticImplementation.IMPLEMENTATION_ID) UserBoundary elasticDao) {
+        this.databaseStrategy = databaseStrategy;
         this.mysqlDao = mysqlDao;
         this.elasticDao = elasticDao;
     }
@@ -48,29 +48,45 @@ public class UserServiceImpl implements UserService {
         return persistedUser;
     }
 
+    @Transactional
     @Override
     public User update(User user) {
-        user.setUpdate(LocalDateTime.now());
-        final var foundUser = databaseFactory.getDatabase().get(UUID.fromString(user.getId()));
-        if (foundUser == null) {
-            throw new RuntimeException("User not found");
+
+        try {
+            user.setUpdate(LocalDateTime.now());
+            final var foundUser = databaseStrategy.getDatabase().get(UUID.fromString(user.getId()));
+            if (foundUser == null) {
+                throw new RuntimeException("User not found");
+            }
+
+            foundUser.setStatus(user.getStatus());
+            foundUser.setFirstName(user.getFirstName());
+            foundUser.setLastName(user.getLastName());
+            foundUser.setUpdate(LocalDateTime.now());
+            mysqlDao.update(foundUser);
+            elasticDao.update(foundUser);
+
+            return foundUser;
+        } catch (Exception e) {
+            throw new RuntimeException("It was not persisted in the database", e);
         }
 
-        foundUser.setStatus(user.getStatus());
-        foundUser.setFirstName(user.getFirstName());
-        foundUser.setLastName(user.getLastName());
-        foundUser.setUpdate(LocalDateTime.now());
-
-        return databaseFactory.getDatabase().update(foundUser);
     }
 
     @Override
     public User get(String id) {
-        return databaseFactory.getDatabase().get(UUID.fromString(id));
+        return databaseStrategy.getDatabase().get(UUID.fromString(id));
     }
 
     @Override
     public void delete(String id) {
-        databaseFactory.getDatabase().delete(UUID.fromString(id));
+
+        try {
+            final var uuid = UUID.fromString(id);
+            mysqlDao.delete(uuid);
+            elasticDao.delete(uuid);
+        } catch (Exception e) {
+            throw new RuntimeException("It was not deleted in the database", e);
+        }
     }
 }

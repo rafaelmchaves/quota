@@ -4,7 +4,7 @@ import com.vicarius.quota.model.User;
 
 import java.util.UUID;
 
-public interface DatabaseInterface {
+public interface UserBoundary {
 
     User save(User user);
     User get(UUID id);

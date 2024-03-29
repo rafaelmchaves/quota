@@ -1,7 +1,7 @@
 package com.vicarius.quota.repository.elastic;
 
 import com.vicarius.quota.model.User;
-import com.vicarius.quota.repository.DatabaseInterface;
+import com.vicarius.quota.repository.UserBoundary;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service(ElasticImplementation.IMPLEMENTATION_ID)
-public class ElasticImplementation implements DatabaseInterface {
+public class ElasticImplementation implements UserBoundary {
     public static final String IMPLEMENTATION_ID = "ElasticImplementation";
 
     @Override

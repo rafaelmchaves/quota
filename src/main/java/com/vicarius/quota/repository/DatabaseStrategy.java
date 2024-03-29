@@ -10,18 +10,18 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class DatabaseFactory {
+public class DatabaseStrategy {
 
-    private final Map<String, DatabaseInterface> databaseInterfaceMap;
+    private final Map<String, UserBoundary> userBoundaryMap;
 
-    public DatabaseInterface getDatabase() {
+    public UserBoundary getDatabase() {
 
         final var now = LocalTime.now();
         if (now.isAfter(LocalTime.of(9,0,0))
                 && now.isBefore(LocalTime.of(17, 0,0))) {
-            return databaseInterfaceMap.get(MySqlImplementation.IMPLEMENTATION_ID);
+            return userBoundaryMap.get(MySqlImplementation.IMPLEMENTATION_ID);
         }
 
-        return databaseInterfaceMap.get(ElasticImplementation.IMPLEMENTATION_ID);
+        return userBoundaryMap.get(ElasticImplementation.IMPLEMENTATION_ID);
     }
 }
