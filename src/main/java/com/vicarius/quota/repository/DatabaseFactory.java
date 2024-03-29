@@ -18,7 +18,7 @@ public class DatabaseFactory {
 
         final var now = LocalTime.now();
         if (now.isAfter(LocalTime.of(9,0,0))
-                && now.isBefore(LocalTime.of(17, 0,0))) {
+                && now.isBefore(LocalTime.of(23, 0,0))) {
             return databaseInterfaceMap.get(MySqlImplementation.IMPLEMENTATION_ID);
         }
 

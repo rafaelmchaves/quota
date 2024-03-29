@@ -5,6 +5,8 @@ import com.vicarius.quota.repository.DatabaseInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Service(MySqlImplementation.IMPLEMENTATION_ID)
 public class MySqlImplementation implements DatabaseInterface {
@@ -15,7 +17,9 @@ public class MySqlImplementation implements DatabaseInterface {
 
     @Override
     public User save(User user) {;
-        final var result = userRepository.save(userEntityMapper.convert(user));
+        final var userEntity = userEntityMapper.convert(user);
+        userEntity.setId(UUID.randomUUID());
+        final var result = userRepository.save(userEntity);
         return userEntityMapper.convert(result);
     }
 }

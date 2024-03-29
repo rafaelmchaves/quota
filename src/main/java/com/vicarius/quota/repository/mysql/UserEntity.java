@@ -1,23 +1,25 @@
 package com.vicarius.quota.repository.mysql;
 
 import com.vicarius.quota.model.Status;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Builder;
-import lombok.Getter;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
+@Setter
 @Getter
 @Builder
 @Table(name = "users")
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserEntity {
 
     @Id
-    private String id;
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -28,10 +30,13 @@ public class UserEntity {
     @Column(name = "last_login_time_utc")
     private LocalDateTime lastLoginTimeUtc;
 
+    @Column(name = "creation_date_time")
     private LocalDateTime creation;
 
+    @Column(name = "update_date_time")
     private LocalDateTime update;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 
 }

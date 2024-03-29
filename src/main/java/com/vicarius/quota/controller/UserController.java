@@ -10,12 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@RestController(value = "/users")
+@RestController()
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping(consumes = "application/json")
+    @PostMapping("/users")
     ResponseEntity<UserResponse> create(@RequestBody UserRequest userRequest) {
 
         this.userService.create(User.builder()
