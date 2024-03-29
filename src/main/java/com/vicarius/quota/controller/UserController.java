@@ -5,7 +5,6 @@ import com.vicarius.quota.controller.request.UserUpdateRequest;
 import com.vicarius.quota.controller.response.UserResponse;
 import com.vicarius.quota.model.User;
 import com.vicarius.quota.services.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

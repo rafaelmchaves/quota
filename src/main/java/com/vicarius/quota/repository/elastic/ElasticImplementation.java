@@ -16,7 +16,7 @@ public class ElasticImplementation implements DatabaseInterface {
     public User save(User user) {
 
         log.info("User was saved");
-        return null;
+        throw new RuntimeException("Elastic problem");
     }
 
     @Override
