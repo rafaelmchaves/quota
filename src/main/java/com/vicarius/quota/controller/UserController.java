@@ -15,19 +15,22 @@ public class UserController {
 
     private final UserService userService;
 
+    private final UserResponseMapper userResponseMapper;
+
     @PostMapping("/users")
     ResponseEntity<UserResponse> create(@RequestBody UserRequest userRequest) {
 
-        this.userService.create(User.builder()
+        final var user = this.userService.create(User.builder()
                 .firstName(userRequest.getFirstName())
                 .lastName(userRequest.getLastName()).build()
         );
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(userResponseMapper.convert(user), HttpStatus.CREATED);
     }
 
-    @PutMapping(consumes = "application/json", value = "/{id}")
+    @PutMapping(consumes = "application/json", value = "/users/{id}")
     ResponseEntity<UserResponse> update(@PathVariable String id, @RequestBody UserRequest userRequest) {
+
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

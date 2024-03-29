@@ -1,5 +1,6 @@
 package com.vicarius.quota.controller.request;
 
+import com.vicarius.quota.model.Status;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,5 +15,7 @@ public class UserResponse {
     private String firstName;
     private String lastName;
     private LocalDateTime lastLoginTimeUtc;
+    private LocalDateTime creation;
+    private Status status;
 
 }
