@@ -17,7 +17,7 @@ public class ElasticImplementation implements UserBoundary {
     public User save(User user) {
 
         log.info("User was saved");
-        throw new RuntimeException("Elastic problem");
+        return null;
     }
 
     @Override

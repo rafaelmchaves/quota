@@ -36,10 +36,9 @@ public class UserServiceImpl implements UserService {
 
         User persistedUser = null;
 
+        user.setCreation(LocalDateTime.now());
+        user.setStatus(Status.ACTIVE);
         try {
-            user.setCreation(LocalDateTime.now());
-            user.setStatus(Status.ACTIVE);
-
             persistedUser = mysqlDao.save(user);
             elasticDao.save(user);
         } catch (Exception e) {
@@ -53,18 +52,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(User user) {
 
-        try {
-            user.setUpdate(LocalDateTime.now());
-            final var foundUser = databaseStrategy.getDatabase().get(UUID.fromString(user.getId()));
-            if (foundUser == null) {
-                throw new RuntimeException("User not found");
-            }
 
-            foundUser.setStatus(user.getStatus());
-            foundUser.setFirstName(user.getFirstName());
-            foundUser.setLastName(user.getLastName());
-            foundUser.setUpdate(LocalDateTime.now());
-            mysqlDao.update(foundUser);
+        user.setUpdate(LocalDateTime.now());
+        var foundUser = databaseStrategy.getDatabase().get(UUID.fromString(user.getId()));
+        if (foundUser == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        foundUser.setStatus(user.getStatus());
+        foundUser.setFirstName(user.getFirstName());
+        foundUser.setLastName(user.getLastName());
+        foundUser.setUpdate(LocalDateTime.now());
+
+        try {
+            foundUser = mysqlDao.update(foundUser);
             elasticDao.update(foundUser);
 
             return foundUser;
@@ -94,5 +95,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return databaseStrategy.getDatabase().findAll();
+    }
+
+    public void blockUser(User user) {
+
+        user.setStatus(Status.BLOCKED);
+        user.setUpdate(LocalDateTime.now());
+
+        try {
+            mysqlDao.update(user);
+            elasticDao.update(user);
+        } catch (Exception e) {
+            throw new RuntimeException("It was not persisted in the database", e);
+        }
     }
 }

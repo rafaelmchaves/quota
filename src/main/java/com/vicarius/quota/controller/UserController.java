@@ -4,6 +4,7 @@ import com.vicarius.quota.controller.request.UserRequest;
 import com.vicarius.quota.controller.request.UserUpdateRequest;
 import com.vicarius.quota.controller.response.UserResponse;
 import com.vicarius.quota.model.User;
+import com.vicarius.quota.services.QuotaService;
 import com.vicarius.quota.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    private final QuotaService quotaService;
 
     private final UserResponseMapper userResponseMapper;
 
@@ -57,6 +60,7 @@ public class UserController {
 
     @PatchMapping(value = "/users/{id}/consume-quota")
     ResponseEntity<Void> consumeQuota(@PathVariable String id) {
+        quotaService.consumeQuota(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
