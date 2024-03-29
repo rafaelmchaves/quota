@@ -40,15 +40,16 @@ public class UserController {
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/users/{id}", produces = "application/json")
+    @GetMapping(value = "/users/{id}")
     ResponseEntity<UserResponse> get(@PathVariable String id) {
 
         final var user = userResponseMapper.convert(this.userService.get(id));
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}", consumes = "application/json")
-    ResponseEntity<Void> delete(@RequestBody UserRequest userRequest) {
+    @DeleteMapping(value = "/users/{id}")
+    ResponseEntity<UserResponse> delete(@PathVariable String id) {
+        this.userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -39,7 +39,7 @@ public class MySqlImplementation implements DatabaseInterface {
     }
 
     @Override
-    public User delete(UUID id) {
-        return null;
+    public void delete(UUID id) {
+        userRepository.deleteById(id);
     }
 }

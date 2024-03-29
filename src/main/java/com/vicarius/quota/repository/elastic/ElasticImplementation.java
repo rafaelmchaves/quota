@@ -21,16 +21,18 @@ public class ElasticImplementation implements DatabaseInterface {
 
     @Override
     public User get(UUID id) {
+        log.info("User was found");
         return null;
     }
 
     @Override
     public User update(User user) {
+        log.info("User was updated");
         return null;
     }
 
     @Override
-    public User delete(UUID id) {
-        return null;
+    public void delete(UUID id) {
+        log.info("User was deleted");
     }
 }

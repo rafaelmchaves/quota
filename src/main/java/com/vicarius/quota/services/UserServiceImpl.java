@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User delete(String id) {
-        return null;
+    public void delete(String id) {
+        databaseFactory.getDatabase().delete(UUID.fromString(id));
     }
 }
