@@ -5,6 +5,7 @@ import com.vicarius.quota.repository.UserBoundary;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -41,5 +42,11 @@ public class MySqlImplementation implements UserBoundary {
     @Override
     public void delete(UUID id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<User> findAll() {
+        final var users = userRepository.findAll();
+        return userEntityMapper.convert(users);
     }
 }

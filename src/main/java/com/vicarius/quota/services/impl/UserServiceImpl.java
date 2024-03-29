@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
@@ -88,5 +89,10 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             throw new RuntimeException("It was not deleted in the database", e);
         }
+    }
+
+    @Override
+    public List<User> findAll() {
+        return databaseStrategy.getDatabase().findAll();
     }
 }
