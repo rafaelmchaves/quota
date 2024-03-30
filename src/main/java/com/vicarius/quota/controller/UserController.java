@@ -1,5 +1,7 @@
 package com.vicarius.quota.controller;
 
+import com.vicarius.quota.controller.mapper.UserRequestMapper;
+import com.vicarius.quota.controller.mapper.UserResponseMapper;
 import com.vicarius.quota.controller.request.UserRequest;
 import com.vicarius.quota.controller.request.UserUpdateRequest;
 import com.vicarius.quota.controller.response.UserResponse;

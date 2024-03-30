@@ -1,4 +1,4 @@
-package com.vicarius.quota.controller;
+package com.vicarius.quota.controller.mapper;
 
 import com.vicarius.quota.controller.request.UserRequest;
 import com.vicarius.quota.controller.request.UserUpdateRequest;
