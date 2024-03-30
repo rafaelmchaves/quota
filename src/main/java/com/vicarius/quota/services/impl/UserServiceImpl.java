@@ -9,6 +9,8 @@ import com.vicarius.quota.repository.mysql.MySqlImplementation;
 import com.vicarius.quota.services.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
         this.elasticDao = elasticDao;
     }
 
+    @CachePut("users")
     @Transactional
     @Override
     public User create(User user) {
@@ -48,6 +51,7 @@ public class UserServiceImpl implements UserService {
         return persistedUser;
     }
 
+    @CachePut("users")
     @Transactional
     @Override
     public User update(User user) {
@@ -75,11 +79,13 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Cacheable("users")
     @Override
     public User get(String id) {
         return databaseStrategy.getDatabase().get(UUID.fromString(id));
     }
 
+    @CachePut("users")
     @Override
     public void delete(String id) {
 
@@ -97,6 +103,7 @@ public class UserServiceImpl implements UserService {
         return databaseStrategy.getDatabase().findAll();
     }
 
+    @CachePut("users")
     public void blockUser(User user) {
 
         user.setStatus(Status.BLOCKED);
