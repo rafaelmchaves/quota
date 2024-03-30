@@ -1,5 +1,6 @@
 package com.vicarius.quota.services.impl;
 
+import com.vicarius.quota.exceptions.UnavailableErrorException;
 import com.vicarius.quota.exceptions.UserNotFoundException;
 import com.vicarius.quota.model.Status;
 import com.vicarius.quota.model.User;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
             persistedUser = mysqlDao.save(user);
             elasticDao.save(user);
         } catch (Exception e) {
-            throw new RuntimeException("It was not persisted in the database", e);
+            throw new UnavailableErrorException("There was a problem to persist data in the database", e);
         }
 
         return persistedUser;
@@ -58,23 +59,23 @@ public class UserServiceImpl implements UserService {
     public User update(User user) {
 
         user.setUpdate(LocalDateTime.now());
-        var foundUser = get(user.getId());
-        if (foundUser == null) {
-            throw new UserNotFoundException("User not found");
-        }
-
-        foundUser.setStatus(user.getStatus());
-        foundUser.setFirstName(user.getFirstName());
-        foundUser.setLastName(user.getLastName());
-        foundUser.setUpdate(LocalDateTime.now());
 
         try {
+            var foundUser = get(user.getId());
+            if (foundUser == null) {
+                throw new UserNotFoundException("User not found");
+            }
+
+            foundUser.setStatus(user.getStatus());
+            foundUser.setFirstName(user.getFirstName());
+            foundUser.setLastName(user.getLastName());
+            foundUser.setUpdate(LocalDateTime.now());
             foundUser = mysqlDao.update(foundUser);
             elasticDao.update(foundUser);
 
             return foundUser;
         } catch (Exception e) {
-            throw new RuntimeException("It was not persisted in the database", e);
+            throw new UnavailableErrorException("There was a problem to persist data in the database", e);
         }
 
     }
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService {
             mysqlDao.delete(uuid);
             elasticDao.delete(uuid);
         } catch (Exception e) {
-            throw new RuntimeException("It was not deleted in the database", e);
+            throw new UnavailableErrorException("There was a problem to persist data in the database", e);
         }
     }
 
@@ -114,7 +115,7 @@ public class UserServiceImpl implements UserService {
             mysqlDao.update(user);
             elasticDao.update(user);
         } catch (Exception e) {
-            throw new RuntimeException("It was not persisted in the database", e);
+            throw new UnavailableErrorException("There was a problem to persist data in the database", e);
         }
     }
 }

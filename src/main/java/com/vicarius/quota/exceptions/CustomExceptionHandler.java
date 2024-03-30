@@ -1,5 +1,6 @@
 package com.vicarius.quota.exceptions;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Objects;
 
+@Slf4j
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -21,6 +23,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             throw exception;
         }
 
+        log.error("Error: " + exception.getMessage() + (exception.getCause() != null ? " - " + exception.getCause() : ""));
         final var errorMessage = new ErrorMessage(exception.getMessage(), exception.getCode());
         HttpStatus httpStatus = exceptionMetadata.httpStatus();
         return handleExceptionInternal(exception, errorMessage, new HttpHeaders(), httpStatus, request);
