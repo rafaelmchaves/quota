@@ -2,6 +2,7 @@ package com.vicarius.quota.services.impl;
 
 import com.vicarius.quota.model.User;
 import com.vicarius.quota.model.UserQuota;
+import com.vicarius.quota.exceptions.MaximumQuotaException;
 import com.vicarius.quota.repository.cache.QuotaRepository;
 import com.vicarius.quota.services.QuotaService;
 import com.vicarius.quota.services.UserService;
@@ -28,8 +29,8 @@ public class QuotaServiceImpl implements QuotaService {
         }
 
         int quota = quotaRepository.getQuota(user.getId());
-        if (quota > REQUESTS_PER_USER) {
-            throw new RuntimeException("You used your maximum quota");
+        if (quota + 1 > REQUESTS_PER_USER) {
+            throw new MaximumQuotaException("You have used the maximum quotas allowed. Max allowed: " + REQUESTS_PER_USER);
         }
 
         quota = quotaRepository.sumQuota(userId);
