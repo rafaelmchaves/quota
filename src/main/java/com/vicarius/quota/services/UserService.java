@@ -14,6 +14,6 @@ public interface UserService {
 
     List<User> findAll();
 
-    void blockUser(User user);
+    void lockUser(User user);
 
 }

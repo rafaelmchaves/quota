@@ -1,9 +1,11 @@
 package com.vicarius.quota.controller;
 
+import com.vicarius.quota.controller.mapper.QuotaMapper;
 import com.vicarius.quota.controller.mapper.UserRequestMapper;
 import com.vicarius.quota.controller.mapper.UserResponseMapper;
 import com.vicarius.quota.controller.request.UserRequest;
 import com.vicarius.quota.controller.request.UserUpdateRequest;
+import com.vicarius.quota.controller.response.QuotaResponse;
 import com.vicarius.quota.controller.response.UserResponse;
 import com.vicarius.quota.model.User;
 import com.vicarius.quota.services.QuotaService;
@@ -27,9 +29,10 @@ public class UserController {
 
     private final UserRequestMapper userRequestMapper;
 
+    private final QuotaMapper quotaMapper;
+
     @PostMapping("/users")
     ResponseEntity<UserResponse> create(@RequestBody UserRequest userRequest) {
-
         final var user = this.userService.create(User.builder()
                 .firstName(userRequest.getFirstName())
                 .lastName(userRequest.getLastName()).build()
@@ -40,7 +43,6 @@ public class UserController {
 
     @PutMapping(value = "/users/{id}")
     ResponseEntity<UserResponse> update(@PathVariable String id, @RequestBody UserUpdateRequest userRequest) {
-
         final var user = this.userRequestMapper.convert(userRequest);
         user.setId(id);
         final var userResponse = userResponseMapper.convert(this.userService.update(user));
@@ -49,7 +51,6 @@ public class UserController {
 
     @GetMapping(value = "/users/{id}")
     ResponseEntity<UserResponse> get(@PathVariable String id) {
-
         final var user = userResponseMapper.convert(this.userService.get(id));
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -67,8 +68,8 @@ public class UserController {
     }
 
     @GetMapping("/users/quota")
-    ResponseEntity<List<UserResponse>> getUsersQuota() {
-        final var users = this.userService.findAll();
-        return new ResponseEntity<>(this.userResponseMapper.convert(users), HttpStatus.OK);
+    ResponseEntity<List<QuotaResponse>> getUsersQuota() {
+        final var quotas = this.quotaService.getAll();
+        return new ResponseEntity<>(this.quotaMapper.convert(quotas), HttpStatus.OK);
     }
 }

@@ -26,7 +26,8 @@ public class QuotaRepository {
 
     @Cacheable("quota")
     public Integer getQuota(String userId) {
-        return quota.get(userId);
+        Integer quotaAmount = quota.get(userId);
+        return quotaAmount == null ? 0 : quotaAmount;
     }
 
 }

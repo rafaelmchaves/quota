@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         this.elasticDao = elasticDao;
     }
 
-    @CachePut("users")
+    @CachePut(value = "users", key = "#result.id")
     @Transactional
     @Override
     public User create(User user) {
@@ -51,14 +51,13 @@ public class UserServiceImpl implements UserService {
         return persistedUser;
     }
 
-    @CachePut("users")
+    @CachePut(value = "users", key = "#result.id")
     @Transactional
     @Override
     public User update(User user) {
 
-
         user.setUpdate(LocalDateTime.now());
-        var foundUser = databaseStrategy.getDatabase().get(UUID.fromString(user.getId()));
+        var foundUser = get(user.getId());
         if (foundUser == null) {
             throw new RuntimeException("User not found");
         }
@@ -98,15 +97,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Cacheable("users")
     @Override
     public List<User> findAll() {
         return databaseStrategy.getDatabase().findAll();
     }
 
     @CachePut("users")
-    public void blockUser(User user) {
+    public void lockUser(User user) {
 
-        user.setStatus(Status.BLOCKED);
+        user.setStatus(Status.LOCKED);
         user.setUpdate(LocalDateTime.now());
 
         try {
