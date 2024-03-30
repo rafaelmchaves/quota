@@ -28,9 +28,9 @@ public class QuotaServiceImpl implements QuotaService {
             throw new RuntimeException("User not found");
         }
 
-        quotaRepository.sumQuota(userId);
+        final int quota = quotaRepository.sumQuota(userId);
 
-        if (quotaRepository.getQuota(userId) > REQUESTS_PER_USER) {
+        if (quota > REQUESTS_PER_USER) {
             userService.blockUser(user);
         }
 
