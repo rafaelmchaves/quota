@@ -1,5 +1,6 @@
 package com.vicarius.quota.services.impl;
 
+import com.vicarius.quota.exceptions.UserNotFoundException;
 import com.vicarius.quota.model.User;
 import com.vicarius.quota.model.UserQuota;
 import com.vicarius.quota.exceptions.MaximumQuotaException;
@@ -25,7 +26,7 @@ public class QuotaServiceImpl implements QuotaService {
     public void consumeQuota(String userId) {
         final var user = this.userService.get(userId);
         if (user == null) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User not found");
         }
 
         int quota = quotaRepository.getQuota(user.getId());

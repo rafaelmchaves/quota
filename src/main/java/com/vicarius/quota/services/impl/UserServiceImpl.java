@@ -1,5 +1,6 @@
 package com.vicarius.quota.services.impl;
 
+import com.vicarius.quota.exceptions.UserNotFoundException;
 import com.vicarius.quota.model.Status;
 import com.vicarius.quota.model.User;
 import com.vicarius.quota.repository.DatabaseStrategy;
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
         user.setUpdate(LocalDateTime.now());
         var foundUser = get(user.getId());
         if (foundUser == null) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User not found");
         }
 
         foundUser.setStatus(user.getStatus());
