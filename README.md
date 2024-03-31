@@ -8,6 +8,11 @@ TODOs:
 - Create diagrams explaining the code
 - Update readme
 - Implement Unit tests
+- Thing about the timeout and why is not throwing an exception
+
+
+## Decisions
+
 
 
 ## Future
