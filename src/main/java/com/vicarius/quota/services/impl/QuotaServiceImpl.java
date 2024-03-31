@@ -8,6 +8,7 @@ import com.vicarius.quota.repository.cache.QuotaRepository;
 import com.vicarius.quota.services.QuotaService;
 import com.vicarius.quota.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuotaServiceImpl implements QuotaService {
 
-    private static final Integer REQUESTS_PER_USER = 5;
+    @Value("${REQUESTS_PER_USER}")
+    private Integer requestsPerUser;
 
     private final QuotaRepository quotaRepository;
 
@@ -30,12 +32,12 @@ public class QuotaServiceImpl implements QuotaService {
         }
 
         int quota = quotaRepository.getQuota(user.getId());
-        if (quota + 1 > REQUESTS_PER_USER) {
-            throw new MaximumQuotaException("You have used the maximum quotas allowed. Max allowed: " + REQUESTS_PER_USER);
+        if (quota + 1 > requestsPerUser) {
+            throw new MaximumQuotaException("You have used the maximum quotas allowed. Max allowed: " + requestsPerUser);
         }
 
         quota = quotaRepository.sumQuota(userId);
-        if (quota > REQUESTS_PER_USER) {
+        if (quota > requestsPerUser) {
             userService.lockUser(user);
         }
 
