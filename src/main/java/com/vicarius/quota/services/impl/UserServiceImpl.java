@@ -87,6 +87,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @CachePut("users")
+    @Transactional
     @Override
     public void delete(String id) {
 
