@@ -15,6 +15,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 @SpringBootTest
 class QuotaServiceTest {
@@ -71,11 +75,39 @@ class QuotaServiceTest {
 
         final var exception = Assertions.assertThrows(MaximumQuotaException.class, () -> quotaService.consumeQuota(userId));
 
-        Assertions.assertEquals("You have used the maximum quotas allowed. Max allowed: 5", exception.getMessage());
-        Assertions.assertEquals(ErrorCode.MAXIMUM_QUOTA.getCode(), exception.getCode());
-
+        Assertions.assertAll(() -> {
+            Assertions.assertEquals("You have used the maximum quotas allowed. Max allowed: 5", exception.getMessage());
+            Assertions.assertEquals(ErrorCode.MAXIMUM_QUOTA.getCode(), exception.getCode());
+        });
         Mockito.verify(userService, Mockito.times(0)).lockUser(user);
         Mockito.verify(quotaRepository, Mockito.times(0)).sumQuota(userId);
+
+    }
+
+    @Test
+    void getAll_callMethod_returnAllUserQuota() {
+
+        final var list = new ArrayList<User>();
+        list.add(getUser(UUID.randomUUID().toString()));
+        list.add(getUser(UUID.randomUUID().toString()));
+
+        Mockito.when(userService.findAll()).thenReturn(list);
+        Mockito.when(quotaRepository.getQuota(list.get(0).getId())).thenReturn(1);
+        Mockito.when(quotaRepository.getQuota(list.get(1).getId())).thenReturn(1);
+
+        final var response = this.quotaService.getAll();
+
+        Assertions.assertAll(() -> {
+            for (int i = 0; i < response.size(); i++) {
+                Assertions.assertEquals(list.get(i).getId(), response.get(i).getUser().getId());
+                Assertions.assertEquals(list.get(i).getFirstName(), response.get(i).getUser().getFirstName());
+                Assertions.assertEquals(list.get(i).getLastName(), response.get(i).getUser().getLastName());
+                Assertions.assertEquals(list.get(i).getStatus(), response.get(i).getUser().getStatus());
+                Assertions.assertEquals(1, response.get(i).getUsedQuota());
+            } {
+
+            }
+        });
 
     }
 
