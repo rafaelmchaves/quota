@@ -37,7 +37,7 @@ public class QuotaServiceImpl implements QuotaService {
         }
 
         quota = quotaRepository.sumQuota(userId);
-        if (quota > requestsPerUser) {
+        if (quota == requestsPerUser) {
             userService.lockUser(user);
         }
 

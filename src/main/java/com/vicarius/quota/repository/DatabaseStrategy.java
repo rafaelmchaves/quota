@@ -17,7 +17,7 @@ public class DatabaseStrategy {
     public UserBoundary getDatabase() {
 
         final var now = LocalTime.now();
-        if (now.isAfter(LocalTime.of(9,0,0))
+        if (now.isAfter(LocalTime.of(8,0,0))
                 && now.isBefore(LocalTime.of(23, 0,0))) {
             return userBoundaryMap.get(MySqlImplementation.IMPLEMENTATION_ID);
         }
