@@ -1,7 +1,6 @@
 package com.vicarius.quota.services.impl;
 
 import com.vicarius.quota.dao.UserRepository;
-import com.vicarius.quota.exceptions.UnavailableErrorException;
 import com.vicarius.quota.exceptions.UserNotFoundException;
 import com.vicarius.quota.model.Status;
 import com.vicarius.quota.model.User;
@@ -58,7 +57,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.get(UUID.fromString(id));
     }
 
-    @CachePut("users")
+    @CachePut(value = {"users"})
     @Transactional
     @Override
     public void delete(String id) {
