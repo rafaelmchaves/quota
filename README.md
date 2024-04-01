@@ -7,8 +7,7 @@ TODOs:
 - Create diagrams explaining the code
 - Update readme
 - Implement Unit tests
-- Thing about the timeout and why is not throwing an exception
-- Create error code enum
+- Use of ConcurrentHashMap?
 
 ## Decisions
 
@@ -76,6 +75,3 @@ capture these logs by a tool, and create a dashboard with information and insigh
 
 This way we know how many requests we have every day(or every hour), errors, how the clients are interacting with the platform, and identify bottlenecks.
 
-Retries
-Use of ConcurrentHashMap
-Monitoring
