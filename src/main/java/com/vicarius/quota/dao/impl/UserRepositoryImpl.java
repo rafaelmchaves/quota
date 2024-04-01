@@ -1,5 +1,6 @@
-package com.vicarius.quota.dao;
+package com.vicarius.quota.dao.impl;
 
+import com.vicarius.quota.dao.UserRepository;
 import com.vicarius.quota.dao.elastic.ElasticDaoImpl;
 import com.vicarius.quota.dao.mysql.MySqlDaoImpl;
 import com.vicarius.quota.dao.strategy.DatabaseStrategy;

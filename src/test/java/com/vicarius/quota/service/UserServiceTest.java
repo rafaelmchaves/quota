@@ -26,10 +26,6 @@ public class UserServiceTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    @BeforeEach
-    void beforeEach() {
-        userService = new UserServiceImpl(databaseStrategy, mysqlDao, elasticDao);
-    }
 
     @Test
     void create_servicesUp_dataWasSaved() {
