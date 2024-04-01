@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 public class MaximumQuotaException extends CustomException {
 
     public MaximumQuotaException(String message) {
-        super(message, "1");
+        super(message, ErrorCode.MAXIMUM_QUOTA.getCode());
     }
 
 }

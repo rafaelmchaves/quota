@@ -7,6 +7,6 @@ import org.springframework.http.HttpStatus;
 public class UserNotFoundException extends CustomException {
 
     public UserNotFoundException(String message) {
-        super(message, "2");
+        super(message, ErrorCode.USER_NOT_FOUND.getCode());
     }
 }

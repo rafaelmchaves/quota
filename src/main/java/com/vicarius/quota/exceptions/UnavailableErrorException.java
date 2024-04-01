@@ -6,6 +6,6 @@ import org.springframework.http.HttpStatus;
 public class UnavailableErrorException extends CustomException {
 
     public UnavailableErrorException(String message, Throwable throwable) {
-        super(message, "3", throwable);
+        super(message, ErrorCode.UNAVAILABLE.getCode(), throwable);
     }
 }
