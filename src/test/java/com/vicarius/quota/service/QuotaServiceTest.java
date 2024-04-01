@@ -4,7 +4,7 @@ import com.vicarius.quota.exceptions.ErrorCode;
 import com.vicarius.quota.exceptions.MaximumQuotaException;
 import com.vicarius.quota.model.Status;
 import com.vicarius.quota.model.User;
-import com.vicarius.quota.repository.cache.QuotaRepository;
+import com.vicarius.quota.dao.QuotaRepository;
 import com.vicarius.quota.services.UserService;
 import com.vicarius.quota.services.impl.QuotaServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.UUID;

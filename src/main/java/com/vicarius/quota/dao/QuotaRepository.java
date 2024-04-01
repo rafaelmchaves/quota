@@ -1,4 +1,4 @@
-package com.vicarius.quota.repository.cache;
+package com.vicarius.quota.dao;
 
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;

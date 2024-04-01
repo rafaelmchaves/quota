@@ -1,9 +1,8 @@
-package com.vicarius.quota.repository.mysql;
+package com.vicarius.quota.dao.mysql;
 
 import com.vicarius.quota.model.Status;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

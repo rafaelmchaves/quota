@@ -1,4 +1,4 @@
-package com.vicarius.quota.repository.mysql;
+package com.vicarius.quota.dao.mysql;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, UUID> {
+public interface UserMySqlJpaRepository extends JpaRepository<UserEntity, UUID> {
 }

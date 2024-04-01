@@ -1,7 +1,7 @@
-package com.vicarius.quota.repository.elastic;
+package com.vicarius.quota.dao.elastic;
 
 import com.vicarius.quota.model.User;
-import com.vicarius.quota.repository.UserBoundary;
+import com.vicarius.quota.dao.strategy.UserDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
-@Service(ElasticImplementation.IMPLEMENTATION_ID)
-public class ElasticImplementation implements UserBoundary {
+@Service(ElasticDaoImpl.IMPLEMENTATION_ID)
+public class ElasticDaoImpl implements UserDao {
 
     private final Map<String, User> registers = new HashMap<>();
 

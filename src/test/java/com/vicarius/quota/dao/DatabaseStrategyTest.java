@@ -1,4 +1,4 @@
-package com.vicarius.quota.repository;
+package com.vicarius.quota.dao;
 
 public class DatabaseStrategyTest {
 

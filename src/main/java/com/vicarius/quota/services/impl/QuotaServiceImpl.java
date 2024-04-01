@@ -4,7 +4,7 @@ import com.vicarius.quota.exceptions.UserNotFoundException;
 import com.vicarius.quota.model.User;
 import com.vicarius.quota.model.UserQuota;
 import com.vicarius.quota.exceptions.MaximumQuotaException;
-import com.vicarius.quota.repository.cache.QuotaRepository;
+import com.vicarius.quota.dao.QuotaRepository;
 import com.vicarius.quota.services.QuotaService;
 import com.vicarius.quota.services.UserService;
 import lombok.RequiredArgsConstructor;

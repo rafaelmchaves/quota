@@ -1,4 +1,4 @@
-package com.vicarius.quota.repository.mysql;
+package com.vicarius.quota.dao.mysql;
 
 import com.vicarius.quota.model.User;
 import org.mapstruct.Mapper;

@@ -1,7 +1,7 @@
-package com.vicarius.quota.repository.mysql;
+package com.vicarius.quota.dao.mysql;
 
 import com.vicarius.quota.model.User;
-import com.vicarius.quota.repository.UserBoundary;
+import com.vicarius.quota.dao.strategy.UserDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,24 +9,24 @@ import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Service(MySqlImplementation.IMPLEMENTATION_ID)
-public class MySqlImplementation implements UserBoundary {
+@Service(MySqlDaoImpl.IMPLEMENTATION_ID)
+public class MySqlDaoImpl implements UserDao {
     public static final String IMPLEMENTATION_ID = "MySqlImplementation";
 
-    private final UserRepository userRepository;
+    private final UserMySqlJpaRepository userMySqlJpaRepository;
     private final UserEntityMapper userEntityMapper;
 
     @Override
     public User save(User user) {;
         final var userEntity = userEntityMapper.convert(user);
         userEntity.setId(UUID.randomUUID());
-        final var result = userRepository.save(userEntity);
+        final var result = userMySqlJpaRepository.save(userEntity);
         return userEntityMapper.convert(result);
     }
 
     @Override
     public User get(UUID id) {
-        return userEntityMapper.convert(userRepository.findById(id).orElse(null));
+        return userEntityMapper.convert(userMySqlJpaRepository.findById(id).orElse(null));
     }
 
     @Override
@@ -35,18 +35,18 @@ public class MySqlImplementation implements UserBoundary {
         if (userEntity.getId() == null) {
             userEntity.setId(UUID.randomUUID());
         }
-        final var result = userRepository.save(userEntity);
+        final var result = userMySqlJpaRepository.save(userEntity);
         return userEntityMapper.convert(result);
     }
 
     @Override
     public void delete(UUID id) {
-        userRepository.deleteById(id);
+        userMySqlJpaRepository.deleteById(id);
     }
 
     @Override
     public List<User> findAll() {
-        final var users = userRepository.findAll();
+        final var users = userMySqlJpaRepository.findAll();
         return userEntityMapper.convert(users);
     }
 }
