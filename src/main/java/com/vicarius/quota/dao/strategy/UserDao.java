@@ -8,8 +8,11 @@ import java.util.UUID;
 public interface UserDao {
 
     User save(User user);
+
     User get(UUID id);
+
     User update(User user);
+
     void delete(UUID id);
 
     List<User> findAll();
