@@ -36,7 +36,13 @@ This ensures that data is never saved in MySQL until it's successfully saved in 
 
 Here I will discuss some future possibilities on how we can evolve the architecture of this service.
 
-### Salvar os dados em dois bancos de dados
+### Create a distributed Redis cache
+I'm using a local cache because it's a single instance only solution. But, for the future, with more instances of the application, it will be necessary to use global cache.
+
+### Create more unit tests
+Some class tests should be implemented, for example, UserService, QuotaRepositoryImpl MySqlDaoImpl etc.
+
+### About saving data in two databases
 
 To maintain good system performance, especially if we receive many future requests, I believe we can make future changes to this architecture.
 There is a scenario that could occur, for example, if MySQL or Elastic takes too long to execute operations and times out frequently.
