@@ -1,5 +1,6 @@
 package com.vicarius.quota.services.impl;
 
+import com.vicarius.quota.exceptions.UnavailableErrorException;
 import com.vicarius.quota.exceptions.UserNotFoundException;
 import com.vicarius.quota.model.User;
 import com.vicarius.quota.model.UserQuota;
@@ -7,10 +8,13 @@ import com.vicarius.quota.exceptions.MaximumQuotaException;
 import com.vicarius.quota.dao.QuotaRepository;
 import com.vicarius.quota.services.QuotaService;
 import com.vicarius.quota.services.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -24,6 +28,7 @@ public class QuotaServiceImpl implements QuotaService {
 
     private final UserService userService;
 
+    @Transactional
     @Override
     public void consumeQuota(String userId) {
         final var user = this.userService.get(userId);
@@ -36,9 +41,16 @@ public class QuotaServiceImpl implements QuotaService {
             throw new MaximumQuotaException("You have used the maximum quotas allowed. Max allowed: " + requestsPerUser);
         }
 
-        quota = quotaRepository.sumQuota(userId);
-        if (quota == requestsPerUser) {
-            userService.lockUser(user);
+        try {
+            quota = quotaRepository.sumQuota(userId);
+            user.setLastConsumeTimeUtc(LocalDateTime.now(ZoneOffset.UTC));
+            this.userService.update(user);
+
+            if (quota == requestsPerUser) {
+                userService.lockUser(user);
+            }
+        } catch (Exception ex) {
+            throw new UnavailableErrorException("It was not possible to update user", ex);
         }
 
     }

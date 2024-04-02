@@ -1,5 +1,6 @@
 package com.vicarius.quota.dao;
 
+import com.vicarius.quota.dao.redis.QuotaEntity;
 import org.springframework.stereotype.Component;
 
 
