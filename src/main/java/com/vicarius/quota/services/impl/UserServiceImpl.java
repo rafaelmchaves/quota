@@ -68,7 +68,6 @@ public class UserServiceImpl implements UserService {
         this.userRepository.delete(UUID.fromString(id));
     }
 
-    @Cacheable("users")
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
