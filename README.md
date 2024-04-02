@@ -3,16 +3,15 @@
 TODOs:
 
 - Change quota repository
-- Rethink and refactor name of classes
 - Create diagrams explaining the code
 - Update readme ( include diagrams, explain the redis database, read again what I wrote, talk about the local cache )
-- Implement Unit tests
+- Implement Unit tests(finish quota service exception)
 
 ## Decisions
 
-I used the MVC pattern to send and retrieve data from the controller to the repository. Since the project was quite simple, I didn't introduce unnecessary complexity in the layer architecture.
+I used the MVC pattern to send and retrieve data from the controller to the repository. Since the project was quite simple, I didn't introduce unnecessary complexity in the layer architecture(like hexagonal arch etc).
 
-Data flows between the layers as follows: controller -> service -> repository.
+Data flows between the layers as follows: controller -> service -> dao.
 
 When passing data from one layer to another, I always perform data conversion. For example, the controller receives data
 in the form of UserRequest, which is converted to the User model in the service layer, and when passed to the repository layer,
@@ -21,6 +20,8 @@ it is converted to the UserEntity class object. I've clearly separated what is i
 To determine which database to use, I implemented the strategy pattern, where you can choose which implementation to use based on the time. 
 I believe that this way, if we add another database or have a change in the rule of which database to use, it's easy to change the code.
 This rule applies only when I'm querying users in the database.
+
+![Diagram](/assets/consume-quota-diagram.png?raw=true "Title")
 
 When making any changes to user data or creating a user, I persist this information in both databases, prioritizing data consistency across both DBs.
 Firstly, I save the data in MySQL, and then I persist the information in Elasticsearch.
