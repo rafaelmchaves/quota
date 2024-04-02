@@ -2,12 +2,11 @@
 
 TODOs:
 
+- Change quota repository
 - Rethink and refactor name of classes
-- maybe create a redis to include the quota numbers
 - Create diagrams explaining the code
-- Update readme
+- Update readme ( include diagrams, explain the redis database, read again what I wrote, talk about the local cache )
 - Implement Unit tests
-- Use of ConcurrentHashMap?
 
 ## Decisions
 
