@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-//TODO maybe create as a Record
 @Setter
 @Getter
 public class UserResponse {
@@ -14,7 +13,7 @@ public class UserResponse {
     private String id;
     private String firstName;
     private String lastName;
-    private LocalDateTime lastLoginTimeUtc;
+    private LocalDateTime lastConsumeTimeUtc;
     private LocalDateTime creation;
     private LocalDateTime update;
     private Status status;

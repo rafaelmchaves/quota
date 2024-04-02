@@ -1,19 +1,12 @@
-# quota
+# Quota
 
-TODOs:
-
-- Rethink and refactor name of classes
-- maybe create a redis to include the quota numbers
-- Create diagrams explaining the code
-- Update readme
-- Implement Unit tests
-- Use of ConcurrentHashMap?
+- Implement Unit tests(finish quota service exception)
 
 ## Decisions
 
-I used the MVC pattern to send and retrieve data from the controller to the repository. Since the project was quite simple, I didn't introduce unnecessary complexity in the layer architecture.
+I used the MVC pattern to send and retrieve data from the controller to the repository. Since the project was quite simple, I didn't introduce unnecessary complexity in the layer architecture(like hexagonal arch etc).
 
-Data flows between the layers as follows: controller -> service -> repository.
+Data flows between the layers as follows: controller -> service -> dao.
 
 When passing data from one layer to another, I always perform data conversion. For example, the controller receives data
 in the form of UserRequest, which is converted to the User model in the service layer, and when passed to the repository layer,
@@ -22,6 +15,15 @@ it is converted to the UserEntity class object. I've clearly separated what is i
 To determine which database to use, I implemented the strategy pattern, where you can choose which implementation to use based on the time. 
 I believe that this way, if we add another database or have a change in the rule of which database to use, it's easy to change the code.
 This rule applies only when I'm querying users in the database.
+
+I choose Redis to save the quota information of a user as primary database. Redis is fast to read this information because is a key/value database, and it's easy to install.
+But for the future of the project(in a real project), I would choose dynamoDB or Casssandra as my primary database to record the quotas.
+
+As a single instance that was described in the problem, I'm using local cache. That way, we reduce the throughput in the database.
+
+The diagram below shows the architecture for consume quota.
+
+![Diagram](/assets/consume-quota-diagram.png?raw=true "Consume quota Diagram")
 
 When making any changes to user data or creating a user, I persist this information in both databases, prioritizing data consistency across both DBs.
 Firstly, I save the data in MySQL, and then I persist the information in Elasticsearch.
@@ -32,7 +34,11 @@ In these cases, the data would be inconsistent between the two databases, with t
 To solve this problem, I made the method that performs this control transactional (using the @Transactional annotation). 
 This ensures that data is never saved in MySQL until it's successfully saved in Elasticsearch.
 
-## Future
+![Diagram](/assets/persistUser.png?raw=true "How to persist user")
+
+![Diagram](/assets/persistUserRollback.png?raw=true "Rollback when something was wrong to persist in the elastic database")
+
+## Future and Improvements (TO DO list)
 
 Here I will discuss some future possibilities on how we can evolve the architecture of this service.
 
@@ -41,6 +47,18 @@ I'm using a local cache because it's a single instance only solution. But, for t
 
 ### Create more unit tests
 Some class tests should be implemented, for example, UserService, QuotaRepositoryImpl MySqlDaoImpl etc.
+
+### Retries
+
+We can implement retries if any errors or delays occur, for example, if Elastic was down for 2 seconds or if there was a network issue.
+If this happens, we can retry. We can put retries on all calls to external components (such as databases and message brokers).
+
+If, even after the retry, the problem persists, we can try again after some time. Of course, we'll need to set a limit and let the exception be thrown.
+
+One problem this entails is if the service is down for a longer period and we continue to retry, overloading the server with calls. To address this type of situation, we can use a circuit breaker, for example.
+The circuit breaker will stop sending all requests, reducing the load on the server and allowing it to return to normal. The circuit breaker will release the requests once it identifies that the service has returned to normal.
+
+![Diagram](/assets/retries.png?raw=true "Retries")
 
 ### About saving data in two databases
 
@@ -64,15 +82,11 @@ would run again, and the data would be saved.
 If the data is saved in Elastic and the service crashes before removing the data from the outbox table, we have a data duplication problem, if it is an operation
 that is not idempotent (in the case of POST, for example). To solve this, we can add a unique UUID for each transaction, thus ensuring no duplicates.
 
-### Retries
+![Diagram](/assets/futureArchSaveUser.png?raw=true "Future arch in order to save user in two databases")
 
-We can implement retries if any errors or delays occur, for example, if Elastic was down for 2 seconds or if there was a network issue. 
-If this happens, we can retry. We can put retries on all calls to external components (such as databases and message brokers).
+### Pagination
 
-If, even after the retry, the problem persists, we can try again after some time. Of course, we'll need to set a limit and let the exception be thrown.
-
-One problem this entails is if the service is down for a longer period and we continue to retry, overloading the server with calls. To address this type of situation, we can use a circuit breaker, for example. 
-The circuit breaker will stop sending all requests, reducing the load on the server and allowing it to return to normal. The circuit breaker will release the requests once it identifies that the service has returned to normal.
+When we search all user quota (getUsersQuota), it would be advantageous to utilize pagination to retrieve data from the database in smaller groups (e.g., 10 at a time) rather than retrieving all data at once.
 
 ### Monitoring
 

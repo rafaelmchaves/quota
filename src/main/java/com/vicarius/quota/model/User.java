@@ -14,7 +14,7 @@ public class User {
     private String id;
     private String firstName;
     private String lastName;
-    private LocalDateTime lastLoginTimeUtc;
+    private LocalDateTime lastConsumeTimeUtc;
     private LocalDateTime creation;
     private LocalDateTime update;
     private Status status;

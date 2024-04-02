@@ -26,8 +26,8 @@ public class UserEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "last_login_time_utc")
-    private LocalDateTime lastLoginTimeUtc;
+    @Column(name = "last_consume_time_utc")
+    private LocalDateTime lastConsumeTimeUtc;
 
     @Column(name = "creation_date_time")
     private LocalDateTime creation;

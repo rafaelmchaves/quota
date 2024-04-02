@@ -10,6 +10,7 @@ import com.vicarius.quota.services.impl.QuotaServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -48,6 +49,10 @@ class QuotaServiceTest {
         quotaService.consumeQuota(userId);
 
         Mockito.verify(userService, Mockito.times(0)).lockUser(user);
+
+        final var userCaptor = ArgumentCaptor.forClass(User.class);
+        Mockito.verify(userService, Mockito.times(1)).update(userCaptor.capture());
+        Assertions.assertNotNull(userCaptor.getValue().getLastConsumeTimeUtc());
     }
 
     @Test
@@ -62,6 +67,9 @@ class QuotaServiceTest {
         quotaService.consumeQuota(userId);
 
         Mockito.verify(userService, Mockito.times(1)).lockUser(user);
+        final var userCaptor = ArgumentCaptor.forClass(User.class);
+        Mockito.verify(userService, Mockito.times(1)).update(userCaptor.capture());
+        Assertions.assertNotNull(userCaptor.getValue().getLastConsumeTimeUtc());
     }
 
     @Test
@@ -80,6 +88,7 @@ class QuotaServiceTest {
         });
         Mockito.verify(userService, Mockito.times(0)).lockUser(user);
         Mockito.verify(quotaRepository, Mockito.times(0)).sumQuota(userId);
+        Mockito.verify(userService, Mockito.times(0)).update(user);
 
     }
 

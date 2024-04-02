@@ -48,6 +48,10 @@ public class UserServiceImpl implements UserService {
         foundUser.setLastName(user.getLastName());
         foundUser.setUpdate(LocalDateTime.now());
 
+        if (user.getLastConsumeTimeUtc() != null) {
+            foundUser.setLastConsumeTimeUtc(user.getLastConsumeTimeUtc());
+        }
+
         return this.userRepository.update(foundUser);
     }
 
@@ -64,7 +68,6 @@ public class UserServiceImpl implements UserService {
         this.userRepository.delete(UUID.fromString(id));
     }
 
-    @Cacheable("users")
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
