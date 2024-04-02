@@ -84,6 +84,10 @@ that is not idempotent (in the case of POST, for example). To solve this, we can
 
 ![Diagram](/assets/futureArchSaveUser.png?raw=true "Future arch in order to save user in two databases")
 
+### Pagination
+
+When we search all user quota (getUsersQuota), it would be advantageous to utilize pagination to retrieve data from the database in smaller groups (e.g., 10 at a time) rather than retrieving all data at once.
+
 ### Monitoring
 
 It's very important we monitor everything in production, so one thing that we can do in the future is add more logs and 
