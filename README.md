@@ -1,6 +1,16 @@
 # Quota
 
-- Implement Unit tests(finish quota service exception)
+## How to execute
+
+Script of mySql: user_quota.sql
+
+It's a Spring boot project with gradle:
+```
+./gradlew bootRun
+```
+Or use an IDE to execute in local machine.
+
+I included a docker-compose.yml file to run up the Mysql and Redis databases in local machine.
 
 ## Decisions
 
