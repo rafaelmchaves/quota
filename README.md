@@ -63,7 +63,7 @@ If, even after the retry, the problem persists, we can try again after some time
 One problem this entails is if the service is down for a longer period and we continue to retry, overloading the server with calls. To address this type of situation, we can use a circuit breaker, for example.
 The circuit breaker will stop sending all requests, reducing the load on the server and allowing it to return to normal. The circuit breaker will release the requests once it identifies that the service has returned to normal.
 
-![Diagram](/assets/futureArchSaveUser.png?raw=true "Retries")
+![Diagram](/assets/retries.png?raw=true "Retries")
 
 ### About saving data in two databases
 
