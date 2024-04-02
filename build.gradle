@@ -28,6 +28,8 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: '3.2.4'
 	implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '3.1.5'
+	implementation group: 'redis.clients', name: 'jedis', version: '5.1.2'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
