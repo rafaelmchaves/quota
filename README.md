@@ -24,6 +24,8 @@ This rule applies only when I'm querying users in the database.
 I choose Redis to save the quota information of a user as primary database. Redis is fast to read this information because is a key/value database, and it's easy to install.
 But for the future of the project(in a real project), I would choose dynamoDB or Casssandra as my primary database to record the quotas.
 
+As a single instance that was described in the problem, I'm using local cache. That way, we reduce the throughput in the database.
+
 The diagram below shows the architecture for consume quota.
 
 ![Diagram](/assets/consume-quota-diagram.png?raw=true "Consume quota Diagram")
@@ -41,7 +43,7 @@ This ensures that data is never saved in MySQL until it's successfully saved in 
 
 ![Diagram](/assets/persistUserRollback.png?raw=true "Rollback when something was wrong to persist in the elastic database")
 
-## Future
+## Future or Improvements
 
 Here I will discuss some future possibilities on how we can evolve the architecture of this service.
 
@@ -50,6 +52,18 @@ I'm using a local cache because it's a single instance only solution. But, for t
 
 ### Create more unit tests
 Some class tests should be implemented, for example, UserService, QuotaRepositoryImpl MySqlDaoImpl etc.
+
+### Retries
+
+We can implement retries if any errors or delays occur, for example, if Elastic was down for 2 seconds or if there was a network issue.
+If this happens, we can retry. We can put retries on all calls to external components (such as databases and message brokers).
+
+If, even after the retry, the problem persists, we can try again after some time. Of course, we'll need to set a limit and let the exception be thrown.
+
+One problem this entails is if the service is down for a longer period and we continue to retry, overloading the server with calls. To address this type of situation, we can use a circuit breaker, for example.
+The circuit breaker will stop sending all requests, reducing the load on the server and allowing it to return to normal. The circuit breaker will release the requests once it identifies that the service has returned to normal.
+
+![Diagram](/assets/futureArchSaveUser.png?raw=true "Retries")
 
 ### About saving data in two databases
 
@@ -74,16 +88,6 @@ If the data is saved in Elastic and the service crashes before removing the data
 that is not idempotent (in the case of POST, for example). To solve this, we can add a unique UUID for each transaction, thus ensuring no duplicates.
 
 ![Diagram](/assets/futureArchSaveUser.png?raw=true "Future arch in order to save user in two databases")
-
-### Retries
-
-We can implement retries if any errors or delays occur, for example, if Elastic was down for 2 seconds or if there was a network issue. 
-If this happens, we can retry. We can put retries on all calls to external components (such as databases and message brokers).
-
-If, even after the retry, the problem persists, we can try again after some time. Of course, we'll need to set a limit and let the exception be thrown.
-
-One problem this entails is if the service is down for a longer period and we continue to retry, overloading the server with calls. To address this type of situation, we can use a circuit breaker, for example. 
-The circuit breaker will stop sending all requests, reducing the load on the server and allowing it to return to normal. The circuit breaker will release the requests once it identifies that the service has returned to normal.
 
 ### Monitoring
 
