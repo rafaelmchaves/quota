@@ -21,7 +21,12 @@ To determine which database to use, I implemented the strategy pattern, where yo
 I believe that this way, if we add another database or have a change in the rule of which database to use, it's easy to change the code.
 This rule applies only when I'm querying users in the database.
 
-![Diagram](/assets/consume-quota-diagram.png?raw=true "Title")
+I choose Redis to save the quota information of a user as primary database. Redis is fast to read this information because is a key/value database, and it's easy to install.
+But for the future of the project(in a real project), I would choose dynamoDB or Casssandra as my primary database to record the quotas.
+
+The diagram below shows the architecture for consume quota.
+
+![Diagram](/assets/consume-quota-diagram.png?raw=true "Consume quota Diagram")
 
 When making any changes to user data or creating a user, I persist this information in both databases, prioritizing data consistency across both DBs.
 Firstly, I save the data in MySQL, and then I persist the information in Elasticsearch.
@@ -31,6 +36,10 @@ or even if there was a bug in the implementation at the moment of saving to Elas
 In these cases, the data would be inconsistent between the two databases, with the user data existing in MySQL but not in Elasticsearch. 
 To solve this problem, I made the method that performs this control transactional (using the @Transactional annotation). 
 This ensures that data is never saved in MySQL until it's successfully saved in Elasticsearch.
+
+![Diagram](/assets/persistUser.png?raw=true "How to persist user")
+
+![Diagram](/assets/persistUserRollback.png?raw=true "Rollback when something was wrong to persist in the elastic database")
 
 ## Future
 
@@ -63,6 +72,8 @@ would run again, and the data would be saved.
 
 If the data is saved in Elastic and the service crashes before removing the data from the outbox table, we have a data duplication problem, if it is an operation
 that is not idempotent (in the case of POST, for example). To solve this, we can add a unique UUID for each transaction, thus ensuring no duplicates.
+
+![Diagram](/assets/futureArchSaveUser.png?raw=true "Future arch in order to save user in two databases")
 
 ### Retries
 
