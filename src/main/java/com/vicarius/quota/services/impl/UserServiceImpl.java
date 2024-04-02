@@ -48,6 +48,10 @@ public class UserServiceImpl implements UserService {
         foundUser.setLastName(user.getLastName());
         foundUser.setUpdate(LocalDateTime.now());
 
+        if (user.getLastConsumeTimeUtc() != null) {
+            foundUser.setLastConsumeTimeUtc(user.getLastConsumeTimeUtc());
+        }
+
         return this.userRepository.update(foundUser);
     }
 
