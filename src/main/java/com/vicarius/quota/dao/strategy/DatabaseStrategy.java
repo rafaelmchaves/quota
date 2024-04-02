@@ -15,8 +15,8 @@ public class DatabaseStrategy {
     private final Map<String, UserDao> userBoundaryMap;
 
     //It can't be final because of reflections that was set in the unit tests
-    private LocalTime dayStartTime= LocalTime.of(8,0,0);
-    private LocalTime dayEndTime = LocalTime.of(23,0,0);
+    private LocalTime dayStartTime= LocalTime.of(9,0,0);
+    private LocalTime dayEndTime = LocalTime.of(17,0,0);
 
     public UserDao getDatabase() {
         final var now = LocalTime.now();
