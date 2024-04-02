@@ -1,10 +1,5 @@
 # quota
 
-TODOs:
-
-- Change quota repository
-- Create diagrams explaining the code
-- Update readme ( include diagrams, explain the redis database, read again what I wrote, talk about the local cache )
 - Implement Unit tests(finish quota service exception)
 
 ## Decisions
@@ -43,7 +38,7 @@ This ensures that data is never saved in MySQL until it's successfully saved in 
 
 ![Diagram](/assets/persistUserRollback.png?raw=true "Rollback when something was wrong to persist in the elastic database")
 
-## Future or Improvements
+## Future and Improvements (TO DO list)
 
 Here I will discuss some future possibilities on how we can evolve the architecture of this service.
 
