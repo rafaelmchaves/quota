@@ -1,4 +1,57 @@
-# Quota
+# Quota Vicarius
+
+As a BE developer, your task is to improve the efficiency of our Web API usage by preventing abuse caused by excessive requests from multiple users (quota).
+
+To accomplish this, implement a robust access-limiting mechanism that ensures optimal performance and resource utilization.
+
+The new API should accept up to X API requests per user (for instance, 5 requests per user) - Beyond the quota of X requests, the user should be blocked.
+
+Unfortunately, our users reside in two different sources: one in Elastic and one in MySQL.
+
+During the day (9:00 - 17:00 UTC), we use MySQL as a source, During the night (17:01 - 8:59), we use Elastic.
+
+Create a new Spring Boot application that can be run and tested. In your coding, consider scalability, extensibility, and design patterns.You should implement one database (as localhost), and the other implementation can be printing functions only.
+
+Just pointing out:
+
+    Please, do not use third-party libraries for the quota mechanism (spring boot starter etc.).
+
+    No authentication is required for the server app service
+
+    Assume single instance of your server app service
+
+    You don’t need to take care of data in database. for your testing you can seed some users.
+
+    If you want to expand the User model - do it - add fields
+
+    time\recycle is not something you should care about. while the user reached his quota - he is locked
+
+ 
+
+API functions:
+
+    CRUD functions for the user model: (should not be monitored as quota)
+
+    createUser(User user);
+
+    getUser(String userId);
+
+    updateUser(String userId, User updatedUser);
+
+    deleteUser(String userId);
+
+    consumeQuota(@PathVariable String userId);
+
+        This function is the main function used for access and counting the users’ quotas.
+
+    getUsersQuota();
+       This function returns all users and their quota statuses.
+
+*** Bonus: Add unit testing for your solution.
+
+
+User model:
+public class User { private String id; private String firstName; private String lastName; private LocalDateTime lastLoginTimeUtc; }
 
 ## How to execute
 
